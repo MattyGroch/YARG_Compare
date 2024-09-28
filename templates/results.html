@@ -1,22 +1,24 @@
 {% macro table_html(songs) %}
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Artist</th>
-                <th>Charter</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for song in songs %}
-            <tr>
-                <td>{{ song.Name }}</td>
-                <td>{{ song.Artist }}</td>
-                <td>{{ song.Charter }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Artist</th>
+                    <th>Charter</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for song in songs %}
+                <tr>
+                    <td>{{ song.Name }}</td>
+                    <td>{{ song.Artist }}</td>
+                    <td>{{ song.Charter }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endmacro %}
 
 <!DOCTYPE html>
@@ -29,34 +31,63 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <style>
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+        .container-fluid {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .tab-content {
+            flex-grow: 1;
+            overflow: hidden;
+        }
+        .tab-pane {
+            height: 100%;
+            overflow-y: auto;
+        }
+        .table-responsive {
+            height: calc(100% - 50px); /* Adjust based on your header height */
+            overflow-y: auto;
+        }
+        .table thead th {
+            position: sticky;
+            top: 0;
+            background-color: white;
+            z-index: 1;
+        }
+    </style>
 </head>
 <body>
-    <div class="container mt-5">
+    <div class="container-fluid h-100 d-flex flex-column">
         <h1 class="mb-4">Song Comparison Results</h1>
         
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" id="common-tab" data-toggle="tab" href="#common" role="tab">Songs in Both Lists</a>
+                <a class="nav-link active" id="common-tab" data-toggle="tab" href="#common" role="tab">Songs in Both Lists ({{ common|length }})</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="missing-a-tab" data-toggle="tab" href="#missing-a" role="tab">Missing from {{ label_a }}</a>
+                <a class="nav-link" id="missing-a-tab" data-toggle="tab" href="#missing-a" role="tab">Missing from {{ label_a }} ({{ missing_from_a|length }})</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="missing-b-tab" data-toggle="tab" href="#missing-b" role="tab">Missing from {{ label_b }}</a>
+                <a class="nav-link" id="missing-b-tab" data-toggle="tab" href="#missing-b" role="tab">Missing from {{ label_b }} ({{ missing_from_b|length }})</a>
             </li>
         </ul>
         
-        <div class="tab-content mt-3" id="myTabContent">
-            <div class="tab-pane fade show active" id="common" role="tabpanel">
-                <h2>Songs in both {{ label_a }} and {{ label_b }}</h2>
+        <div class="tab-content flex-grow-1" id="myTabContent">
+            <div class="tab-pane fade show active h-100" id="common" role="tabpanel">
+                <h2>Songs in both {{ label_a }} and {{ label_b }} ({{ common|length }} songs)</h2>
                 {{ table_html(common) }}
             </div>
-            <div class="tab-pane fade" id="missing-a" role="tabpanel">
-                <h2>Songs in {{ label_b }} but missing from {{ label_a }}</h2>
+            <div class="tab-pane fade h-100" id="missing-a" role="tabpanel">
+                <h2>Songs in {{ label_b }} but missing from {{ label_a }} ({{ missing_from_a|length }} songs)</h2>
                 {{ table_html(missing_from_a) }}
             </div>
-            <div class="tab-pane fade" id="missing-b" role="tabpanel">
-                <h2>Songs in {{ label_a }} but missing from {{ label_b }}</h2>
+            <div class="tab-pane fade h-100" id="missing-b" role="tabpanel">
+                <h2>Songs in {{ label_a }} but missing from {{ label_b }} ({{ missing_from_b|length }} songs)</h2>
                 {{ table_html(missing_from_b) }}
             </div>
         </div>
