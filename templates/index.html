@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Song List Comparison</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Song List Comparison</h1>
+        <form action="/compare" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="file_a">List A:</label>
+                <input type="file" class="form-control-file" id="file_a" name="file_a" accept=".json" required>
+            </div>
+            <div class="form-group">
+                <label for="label_a">Label for List A:</label>
+                <input type="text" class="form-control" id="label_a" name="label_a" required>
+            </div>
+            <div class="form-group">
+                <label for="file_b">List B:</label>
+                <input type="file" class="form-control-file" id="file_b" name="file_b" accept=".json" required>
+            </div>
+            <div class="form-group">
+                <label for="label_b">Label for List B:</label>
+                <input type="text" class="form-control" id="label_b" name="label_b" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Compare Lists</button>
+        </form>
+    </div>
+</body>
+</html>
